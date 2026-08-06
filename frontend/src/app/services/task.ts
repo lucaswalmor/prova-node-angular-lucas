@@ -7,20 +7,21 @@ import { Task } from '../interfaces/task';
 })
 export class TaskService {
   constructor (private api: HttpClient) {}
+  private apiUrl = 'http://localhost:3000';
 
   get() {
-    return this.api.get<Task[]>('http://localhost:3000/tasks');
+    return this.api.get<Task[]>(`${this.apiUrl}/tasks`);
   }
 
   delete(id: number) {
-    return this.api.delete<Task>(`http://localhost:3000/tasks/${id}`);
+    return this.api.delete<Task>(`${this.apiUrl}/tasks/${id}`);
   }
 
   put(id: number, task: Task) {
-    return this.api.put<Task>(`http://localhost:3000/tasks/${id}`, task);
+    return this.api.put<Task>(`${this.apiUrl}/tasks/${id}`, task);
   }
 
   post(task: Task) {
-    return this.api.post<Task>('http://localhost:3000/tasks', task);
+    return this.api.post<Task>(`${this.apiUrl}/tasks`, task);
   }
 }

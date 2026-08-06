@@ -22,8 +22,13 @@ export class Tasks {
   }
 
   getTasks() {
-    this.taskService.get().subscribe(tasks => {
-      this.tasks.set(tasks);
+    this.taskService.get().subscribe({
+      next: (tasks) => {
+        this.tasks.set(tasks);
+      },
+      error: (err) => {
+        console.error(err.error?.message ?? err);
+      },
     });
   }
 
@@ -36,10 +41,17 @@ export class Tasks {
   }
 
   deleteTask(task: Task) {
-    console.log("Task clicada:", task);
-    if (confirm(`Deseja realmente deletar a task ${task.title}?`) == true) {
-      this.taskService.delete(task.id).subscribe(() => {
-        this.getTasks();
+    if (confirm(`Deseja realmente deletar a task ${task.title}?`)) {
+      this.taskService.delete(task.id).subscribe({
+        next: (response) => {
+          this.getTasks();
+        },
+        error: (err) => {
+          console.log('Erro:', err);
+          console.log('Mensagem do backend:', err.error);
+
+          alert(err.error.message);
+        },
       });
     }
   }
@@ -62,7 +74,7 @@ export class Tasks {
   createTask(data: Task) {
     this.taskService.post(data).subscribe(() => {
       this.closeCreateModal();
-      this.getTasks()
-    })
+      this.getTasks();
+    });
   }
 }
