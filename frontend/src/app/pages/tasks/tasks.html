@@ -3,11 +3,17 @@
     <p>Total: {{ tasks().length }}</p>
 </div>
 
-<div class="mb-5">
+<div class="mb-5 gap-2 flex">
     <button type="button"
         class="rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white hover:bg-blue-700 cursor-pointer"
         (click)="openCreateModal()">
         Adicionar Tarefa
+    </button>
+
+    <button type="button"
+        class="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 cursor-pointer"
+        (click)="onLogout()">
+        Logout
     </button>
 </div>
 
@@ -127,3 +133,7 @@
         (createTaskModal)="createTask($event)"
     />
 }
+
+<div>
+
+</div>

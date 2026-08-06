@@ -3,6 +3,8 @@ import { Task } from '../../interfaces/task';
 import { TaskService } from '../../services/task';
 import { FormsModule } from '@angular/forms';
 import { CreateTaskModal } from '../../components/create-task-modal/create-task-modal';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasks',
@@ -11,7 +13,7 @@ import { CreateTaskModal } from '../../components/create-task-modal/create-task-
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private authService: AuthService, private router: Router) {}
 
   tasks = signal<Task[]>([]);
   selectedTask = signal<Task | null>(null);
@@ -22,8 +24,13 @@ export class Tasks {
   }
 
   getTasks() {
-    this.taskService.get().subscribe(tasks => {
-      this.tasks.set(tasks);
+    this.taskService.get().subscribe({
+      next: (tasks) => {
+        this.tasks.set(tasks);
+      },
+      error: (err) => {
+        console.error(err.error?.message ?? err);
+      },
     });
   }
 
@@ -36,10 +43,17 @@ export class Tasks {
   }
 
   deleteTask(task: Task) {
-    console.log("Task clicada:", task);
-    if (confirm(`Deseja realmente deletar a task ${task.title}?`) == true) {
-      this.taskService.delete(task.id).subscribe(() => {
-        this.getTasks();
+    if (confirm(`Deseja realmente deletar a task ${task.title}?`)) {
+      this.taskService.delete(task.id).subscribe({
+        next: (response) => {
+          this.getTasks();
+        },
+        error: (err) => {
+          console.log('Erro:', err);
+          console.log('Mensagem do backend:', err.error);
+
+          alert(err.error.message);
+        },
       });
     }
   }
@@ -62,7 +76,12 @@ export class Tasks {
   createTask(data: Task) {
     this.taskService.post(data).subscribe(() => {
       this.closeCreateModal();
-      this.getTasks()
-    })
+      this.getTasks();
+    });
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 }
