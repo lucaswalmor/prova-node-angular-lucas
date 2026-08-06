@@ -29,6 +29,11 @@ export class CreateTaskModal {
   }
 
   createTask() {
+    if (this.task().title.trim() === '' || this.task().description.trim() === '') {
+      alert('Título e descrição são obrigatórios');
+      return;
+    }
+
     this.createTaskModal.emit(this.task());
   }
 }
