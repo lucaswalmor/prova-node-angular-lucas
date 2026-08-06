@@ -3,6 +3,8 @@ import { Task } from '../../interfaces/task';
 import { TaskService } from '../../services/task';
 import { FormsModule } from '@angular/forms';
 import { CreateTaskModal } from '../../components/create-task-modal/create-task-modal';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasks',
@@ -11,7 +13,7 @@ import { CreateTaskModal } from '../../components/create-task-modal/create-task-
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService, private authService: AuthService, private router: Router) {}
 
   tasks = signal<Task[]>([]);
   selectedTask = signal<Task | null>(null);
@@ -76,5 +78,10 @@ export class Tasks {
       this.closeCreateModal();
       this.getTasks();
     });
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/']);
   }
 }
