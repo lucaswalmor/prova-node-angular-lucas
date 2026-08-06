@@ -1,5 +1,4 @@
 import { type Request, type Response } from "express";
-import { type Task } from "../interfaces/Task.js";
 import { type UpdateTaskDTO } from "../dto/UpdateTaskDTO.js";
 import TaskService from "../services/TaskService.js";
 import type { CreateTaskDTO } from "../dto/CreateTaskDTO.js";

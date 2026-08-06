@@ -1,21 +1,10 @@
 import prisma from '../database/prisma.js';
 import { type CreateTaskDTO } from '../dto/CreateTaskDTO.js';
 import type { UpdateTaskDTO } from '../dto/UpdateTaskDTO.js';
-// import { type Task } from '../interfaces/Task.js';
 import { type Task } from '../generated/prisma/client.js';
 
 
 class TaskService {
-    // private tasks: Task[] = [
-    //     { id: 1, title: 'Task 1', description: 'Descrição 1', isCompleted: false },
-    //     { id: 2, title: 'Task 2', description: 'Descrição 2', isCompleted: false },
-    //     { id: 3, title: 'Task 3', description: 'Descrição 3', isCompleted: false },
-    // ]
-
-    // private findTask(id: number): Task | undefined {
-    //     return this.tasks.find(task => task.id === id);
-    // }
-
     async index(): Promise<Task[]> {
         return prisma.task.findMany();
     }
