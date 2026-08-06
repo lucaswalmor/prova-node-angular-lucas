@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Task } from '../../interfaces/task';
-import { TaskService } from '../../services/task';
 
 @Component({
   selector: 'app-create-task-modal',
@@ -13,9 +12,6 @@ export class CreateTaskModal {
   @Output() closeCreateModal = new EventEmitter<void>();
   @Output() openCreateModal = new EventEmitter<void>();
   @Output() createTaskModal = new EventEmitter<Task>();
-  
-
-  constructor(private taskService: TaskService) {}
 
   task = signal<Task>({
     id: 0,
